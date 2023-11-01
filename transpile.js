@@ -7,6 +7,11 @@ export function transpile(pCode) {
 		// Safe Navigation: t?.x?.y == nil
 		match = match.replace(/(?<=[\w\]])\?(?=\.\w|\[)/gi, "");
 
+		// Parse-time joaat hashes `hash`
+		match = match.replace(/`(.+?)`/g, (_match, hash) => {
+			return `GetHashKey(${hash})`;
+		});
+
 		// If the match is a for loop, don't unpack
 		if (!match.match(/^\s*for/gm)) {
 			// Unpacking named values from tables using in: local a,b,c in t

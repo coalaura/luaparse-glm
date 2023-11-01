@@ -1,5 +1,5 @@
 export function remove_strings(pCode) {
-	let result = '',
+	let result = "",
 		strings = [];
 
 	// Extract all strings
