@@ -1,5 +1,5 @@
 import { remove_strings, restore_strings } from "./strings.js";
-import { replace_glm } from "./transpiler.js";
+import { replace_glm } from "./transpile.js";
 import { wrap_parse } from "./parse.js";
 
 export function transpile(pCode) {
