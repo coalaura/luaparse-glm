@@ -1,5 +1,5 @@
 // See: https://github.com/citizenfx/lua/blob/luaglm-dev/cfx/README.md
-export function transpile(pCode) {
+export function replace_glm(pCode) {
 	pCode = pCode.replace(/(?<=^|;).*?(?=$|;)/gm, match => {
 		// +=, -=, *=, /=, <<=, >>=, &=, |=, and ^=
 		match = match.replace(/([\w.]+) ([+\-*/&|^]|<<|>>)=/gi, "$1 = $1 $2");
