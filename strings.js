@@ -31,13 +31,14 @@ export function remove_non_code(pCode) {
 	};
 }
 
+// Replace scuffs out if i don't use () => comment or () => string
 export function restore_non_code(pCode, pComments, pStrings) {
 	for (const [index, comment] of pComments.entries()) {
-		pCode = pCode.replace(`--__COMMENT_${index}__`, comment);
+		pCode = pCode.replace(`--__COMMENT_${index}__`, () => comment);
 	}
 
 	for (const [index, string] of pStrings.entries()) {
-		pCode = pCode.replace(`__STRING_${index}__`, string);
+		pCode = pCode.replace(`__STRING_${index}__`, () => string);
 	}
 
 	return pCode;

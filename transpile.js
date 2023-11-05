@@ -16,8 +16,8 @@ export function replace_glm(pCode) {
 		if (!match.match(/^\s*for/gm)) {
 			// Unpacking named values from tables using in: local a,b,c in t
 
-			match = match.replace(/(?<=\s*[\w.]+) in (.+)/g, (_match, unpack) => {
-				return ` = table.unpack(${unpack})`;
+			match = match.replace(/(?<=do |then |end |^\s*(local )?)(([\w+], ?)*[\w+]) in ([^\s]+)/gm, (_match, vars, _vars, unpack) => {
+				return `${vars} = table.unpack(${unpack})`;
 			});
 		}
 

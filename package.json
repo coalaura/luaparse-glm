@@ -1,6 +1,6 @@
 {
 	"name": "@coalaura/luaparse-glm",
-	"version": "1.0.5",
+	"version": "1.0.6",
 	"type": "module",
 	"description": "Luaparse extension that supports FiveM's lua-glm.",
 	"keywords": ["luaparse", "fivem", "lua-glm", "glm", "luaparse-glm", "lua"],
