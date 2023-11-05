@@ -1,13 +1,13 @@
-import { remove_strings, restore_strings } from "./strings.js";
+import { remove_non_code, restore_non_code } from "./strings.js";
 import { replace_glm } from "./transpile.js";
 import { wrap_parse } from "./parse.js";
 
 export function transpile(pCode) {
-	const { result, strings } = remove_strings(pCode);
+	const { result, comments, strings } = remove_non_code(pCode);
 
 	pCode = replace_glm(result);
 
-	return restore_strings(pCode, strings);
+	return restore_non_code(pCode, comments, strings);
 }
 
 export function parse(pCode, pOptions = {}) {

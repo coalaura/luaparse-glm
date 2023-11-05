@@ -1,55 +1,41 @@
-export function remove_strings(pCode) {
-	let result = "",
+export function remove_non_code(pCode) {
+	const comments = [],
 		strings = [];
 
-	// Extract all strings
-	for (let index = 0; index < pCode.length; index++) {
-		const character = pCode[index];
+	let result = pCode;
 
-		if (['"', "'"].includes(character)) {
-			result += character;
+	result = result.replace(/--\[\[.+?]]|--.+?$/gms, pMatch => {
+		const index = comments.length;
 
-			let string = "";
-			let escaped = false;
+		comments.push(pMatch);
 
-			while (index < pCode.length) {
-				const char = pCode[++index];
+		return `--__COMMENT_${index}__`;
+	});
 
-				if (escaped) {
-					string += char;
-					escaped = false;
+	result = result.replace(/(?<!\\)(["'])([^\n]+?)(?<!\\)(\1)|(?<!\\)(\[\[)(.+?)(?<!\\)(]])/gs, (pMatch, pOpenQuote, pShortString, pCloseQuote, pOpenLongQuote, pLongString, pCloseLongQuote, pIndex) => {
+			const index = strings.length;
 
-					continue;
-				} else if (char === '\\') {
-					escaped = true;
+			const open = pOpenQuote || pOpenLongQuote,
+				string = pShortString || pLongString,
+				close = pCloseQuote || pCloseLongQuote;
 
-					continue;
-				}
+			strings.push(string);
 
-				if (char === character) {
-					strings.push(string);
-
-					result += `__STRING_${strings.length - 1}__${char}`
-
-					break;
-				} else {
-					string += char;
-				}
-			}
-
-			continue;
-		}
-
-		result += character;
-	}
+			return `${open}__STRING_${index}__${close}`;
+		});
 
 	return {
 		result,
+		comments,
 		strings
 	};
 }
 
-export function restore_strings(pCode, pStrings) {
+export function restore_non_code(pCode, pComments, pStrings) {
+	for (const [index, comment] of pComments.entries()) {
+		pCode = pCode.replace(`--__COMMENT_${index}__`, comment);
+	}
+
 	for (const [index, string] of pStrings.entries()) {
 		pCode = pCode.replace(`__STRING_${index}__`, string);
 	}
